@@ -1,52 +1,119 @@
-# Prerequisites
-*.d
+#include<stdio.h>
+#include<stdlib.h>
+#include<locale.h>
+#include <string.h>
 
-# Object files
-*.o
-*.ko
-*.obj
-*.elf
 
-# Linker output
-*.ilk
-*.map
-*.exp
 
-# Precompiled Headers
-*.gch
-*.pch
 
-# Libraries
-*.lib
-*.a
-*.la
-*.lo
+int menu();
+void guardar(char nom[], char temp[]);
+void listar();
 
-# Shared objects (inc. Windows DLLs)
-*.dll
-*.so
-*.so.*
-*.dylib
+struct playlist {
+	char dado[50];
+	char duracao[10];
 
-# Executables
-*.exe
-*.out
-*.app
-*.i*86
-*.x86_64
-*.hex
+	struct playlist *proxima;
+}*Inicio;
 
-# Debug files
-*.dSYM/
-*.su
-*.idb
-*.pdb
 
-# Kernel Module Compile Results
-*.mod*
-*.cmd
-.tmp_versions/
-modules.order
-Module.symvers
-Mkfile.old
-dkms.conf
+int main() {
+	
+
+	setlocale(LC_ALL, "Portuguese");
+
+	char  nome[50], band, time[10], St;
+	int c, num;
+
+
+	while (1) {
+
+		St = menu();
+
+		switch (St) {
+
+		case 1:
+			
+			
+
+			printf("\nQual o nome da banda/artista? ");
+			fgets(nome, 50, stdin);			
+			while ((c = getchar()) != '\n' && c != EOF) {}			
+			printf("\nDigite a duração da faixa: ");
+			fgets(time, 10, stdin);
+			guardar(nome, time);
+			while ((c = getchar()) != '\n' && c != EOF) {}
+			break;
+
+		case 2:
+			listar();
+			break;
+
+		case 3:
+			return 0;
+
+		default:
+			printf("Você digitou um valor invalido");
+		}
+		
+	}
+	return 0;	
+}
+
+int menu() {
+
+	system("Cls");
+	int St, c;
+	printf("-----------------------------------------\n");
+	printf("                   MENU\n ");
+	printf("----------------------------------------\n");
+	printf("\n1.Adicionar uma música\n2.Mostrar lista de musicas\n3.Encerrar programa\n");
+	printf("\nDigite o numero correspondente a opção desejada: ");
+	scanf_s("%d", &St);
+	while ((c = getchar()) != '\n' && c != EOF) {}
+
+
+	system("Cls");
+	return St;
+}
+
+void guardar(char nom[50], char temp[10]){
+
+	playlist *novamusica;
+	novamusica = (playlist *)malloc(sizeof(playlist));	
+	strcpy_s(novamusica->dado,nom);
+	
+	if (Inicio == NULL) {
+
+		Inicio = novamusica;
+		Inicio->proxima = NULL;
+	}
+	else{
+
+		novamusica->proxima = Inicio;
+		Inicio = novamusica;
+	}
+
+}
+
+void listar() {
+
+	playlist *escanear;
+	escanear = (struct playlist *)malloc(sizeof(struct playlist));
+	escanear = Inicio;
+
+	if (escanear == NULL)
+		return;
+
+	while (escanear != NULL) {
+
+		 printf("%s ", escanear->dado);	
+		escanear = escanear->proxima;
+	}
+	printf("\n");
+	system("pause");
+	return;
+
+}
+
